@@ -1,0 +1,25 @@
+<button id="test">点击</button>
+<script src="jquery.min.js"></script>
+<script>
+	
+	/*
+		.请问点击<buttion id=“test”></button>会有反应么？为什么？能解决么
+	*/
+
+	$('#test').click(function(argument){
+		console.log(1);
+	})
+
+	setTimeout(function(){
+		console.log(2);
+	},0);
+
+	while(true){
+		console.log(3);
+	}
+
+	/*
+		concurrent.Thread.js
+		webwork
+	*/
+</script>

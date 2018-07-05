@@ -1,0 +1,43 @@
+<script>
+	
+	/*
+		请在下面写出JavaScript面向对象编程的混合式继承。并写出ES6版本的继承。  要求：汽车是父类，Cruze是子类。父类有颜色、价格属性，有售卖的方法。Cruze子 类实现父类颜色是红色，价格是140000,售卖方法实现输出如下语句：将 红色的Cruze 买给了小王价格是14万
+	*/
+	// es5 继承
+    function Car (color,price){
+        this.color=color;
+        this.price=price;
+    }
+    Car.prototype.sale = function(){
+        console.log(`将${this.color}色的车以${this.price}的价格卖出`);
+    }
+    function Cruze(color,price){
+        Car.apply(this,[color,price]);
+    }
+    var __prop = Object.create(Car.prototype);
+    __prop.constructor = Cruze;
+    Cruze.prototype = __prop;
+    var cru = new Cruze('紫','100块');
+    cru.sale();
+    
+    // es6继承
+    class Car{
+        constructor(color,price){
+            this.color=color;
+            this.price=price;
+        }
+        sale(){
+            console.log(`将${this.color}色的车以${this.price}的价格卖出`);
+        }
+    }
+    class Cruze extends Car{
+        constructor(color,price){
+            super(color,price)
+        }
+        sale(){
+            super.sale()
+        }
+    }
+    let cru = new Cruze('红','一百块');
+    cru.sale();
+</script>

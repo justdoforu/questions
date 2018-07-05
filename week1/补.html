@@ -1,0 +1,324 @@
+<script>
+
+    /*
+        此题为http://javascript-puzzlers.herokuapp.com 上的题
+
+    */
+
+    // ["1", "2", "3"].map(parseInt);          // [1, NaN, NaN]
+
+    // [typeof null, null instanceof Object]   // ["object", false]
+
+    // [ [3,2,1].reduce(Math.pow), [].reduce(Math.pow) ]   //an error
+
+    // var val = 'smtg';
+    // console.log('Value is ' + (val === 'smtg') ? 'Something' : 'Nothing');      // Something
+
+    // var name = 'World!';
+    // (function () {
+    //     if (typeof name === 'undefined') {
+    //         var name = 'Jack';
+    //         console.log('Goodbye ' + name);
+    //     } else {
+    //         console.log('Hello ' + name);
+    //     }
+    // })();                    // Goodbye Jack
+
+    // var END = Math.pow(2, 53);
+    // var START = END - 100;
+    // var count = 0;
+    // for (var i = START; i <= END; i++) {
+    //     count++;
+    // }
+    // console.log(count);          //它进入一个无限循环，2 53是javascript中最高的数字，2 53+1给出2 53，所以我永远不会变大。
+
+    // var ary = [0, 1, 2];
+    // ary[10] = 10;
+    // ary.filter(function (x) { return x === undefined; });     // 过滤器不会调用缺的元素
+
+    // var two = 0.2
+    // var one = 0.1
+    // var eight = 0.8
+    // var six = 0.6
+    // [two - one == one, eight - six == two]       // [true, false]
+
+    // function showCase(value) {
+    // 	switch (value) {
+    // 		case 'A':
+    // 			console.log('Case A');
+    // 			break;
+    // 		case 'B':
+    // 			console.log('Case B');
+    // 			break;
+    // 		case undefined:
+    // 			console.log('undefined');
+    // 			break;
+    // 		default:
+    // 			console.log('Do not know!');
+    // 	}
+    // }
+    // showCase(new String('A'));                      // switch比较的是===
+
+    // function isOdd(num) {
+    //     return num % 2 == 1;
+    // }
+    // function isEven(num) {
+    //     return num % 2 == 0;
+    // }
+    // function isSane(num) {
+    //     return isEven(num) || isOdd(num);
+    // }
+    // var values = [7, 4, '13', -9, Infinity];
+    // values.map(isSane);                              // -9%2 == -1   Infinity%2 == NaN
+
+    // Array.isArray( Array.prototype )                 // true
+
+    // var a = [0];
+    // if ([0]) {
+    //     console.log(a == true);
+    // } else {
+    //     console.log("wut");  
+    // }                                                // false   
+
+    // [] == []                                         // false
+
+    // '5' + 3
+    // '5' - 3                                          // "53",2
+
+    // 1 + - + + + - + 1                                // 空格不参与计算
+
+    // var ary = Array(3);
+    // ary[0] = 2
+    // ary.map(function (elem) { return '1'; });        //["1",undefined,undefined]  map只计算初始化的值
+
+    // function sidEffecting(ary) {
+    //     ary[0] = ary[2];
+    // }
+    // function bar(a, b, c) {
+    //     c = 10
+    //     sidEffecting(arguments);
+    //     return a + b + c;
+    // }
+    // bar(1, 1, 1)                                     // 21   javascript变量被绑定到参数对象，因此改变变量的参数和改变参数会改变局部变量，即使它们不在同一个范围内。
+
+    // var a = 111111111111111110000,
+    //     b = 1111;
+    // a + b;                                           // 111111111111111110000  JavaScript中的数字缺乏精确性对小和大的数字都有影响。
+
+    // var x = [].reverse;
+    // x();                                             // window
+
+    // Number.MIN_VALUE > 0                             // true   Number.MIN_VALUE表示的是JavaScript中最小的正数
+    /*
+    Number.MAX_VALUE：最大的正数
+    * Number.MIN_VALUE：最小的正数
+    * Number.NaN：特殊值，用来表示这不是一个数
+    * Number.NEGATIVE_INFINITY：负无穷大
+    * Number.POSITIVE_INFINITY：正无穷大*/
+
+    // [1 < 2 < 3, 3 < 2 < 1]                            // [true, true] '<'运算符顺序是从左到右，所以变成了[true < 3, false < 1]
+
+    // 3.toString()
+    // 3..toString()
+    // 3...toString()
+
+    /*   error, "3", error
+     说实话这题有点常见了，很多人都踩过3.toString()的坑（包括我）...虽然JavaScript会在调用方法时对原始值进行包装，但是这个点是小数点呢、还是方法调用的点呢，于是乎第一个就是error了，因为JavaScript解释器会将其认为是小数点。
+     而第二个则很好说通了，第一个点解释为小数点，变成了(3.0).toString() ，结果就是"3"了
+     第三个也是，第一个点为小数点，第二个是方法调用的点，但是后面接的不是一个合法的方法名，于是乎就error了*/
+
+    // var a = /123/,
+    //     b = /123/;
+    // a == b
+    // a === b                                            
+
+    /*
+        false  false
+        正则表达式也是一个对象
+    */
+
+    // var a = {}, b = Object.prototype;
+    // [a.prototype === b, Object.getPrototypeOf(a) === b]
+
+    /*
+        [false, true]
+
+        考查的__proto__和prototype的区别。首先要明确对象和构造函数的关系，对象在创建的时候，其__proto__会指向其构造函数的prototype属性
+        Object实际上是一个构造函数（typeof Object的结果为"function"）,使用字面量创建对象和new Object创建对象是一样的，所以a.__proto__也就是Object.prototype，而Object.getPrototypeOf(a)与a.__proto__是一样的，所以第二个结果为true
+        而实例对象是没有prototype属性的，只有函数才有，所以a.prototype其实是undefined，第一个结果为false
+    */
+
+    // function foo() { }
+    // var oldName = foo.name;
+    // foo.name = "bar";
+    // [oldName, foo.name]
+
+    /*
+    考察了函数的name属性，使用函数定义方式时，会给function对象本身添加一个name属性，保存了函数的名称，很好理解oldName为"foo"。name属性时只读的，不允许修改，所以foo.name = "bar";之后，foo.name还是"foo"，所以结果为["foo", "foo"]
+    */
+
+    // "1 2 3".replace(/\d/g, parseInt)
+    /*
+    "1 NaN 3"
+    首先需要确定replace会传给parseInt哪些参数。举个栗子：
+
+    "1 2 3".replace(/\d/g, function(){
+        console.log(arguments);
+    });
+    //输出结果：
+    //["1", 0, "1 2 3"]
+    //["2", 2, "1 2 3"]
+    //["3", 4, "1 2 3"] 
+    */
+
+    // function f() { }
+    // var parent = Object.getPrototypeOf(f);
+    // f.name // ?
+    // parent.name // ?
+    // typeof eval(f.name) // ?
+    // typeof eval(parent.name) //  ?
+
+    /*
+    "f", "Empty", "function", error
+    f.name值为"f"，而eval("f")则会输出f函数，所以结果为"function"
+    接着看parent，parent实际上就是f.__proto__，需要明确的是JavaScript中的函数也是对象，其也有自己的构造函数Function，所以f.__proto__ === Function.prototype结果是true，而Function.prototype就是一个名为Empty的function
+
+    console.log(Function.prototype);
+    console.log(Function.prototype.name);
+    //输出结果：
+    //function Empty() {}
+    //Empty
+    所以parent.name的值为Empty
+
+    如果想直接在全局作用域下调用Empty，显示未定义...因为Empty并不在全局作用域下
+    */
+
+    // var lowerCaseOnly = /^[a-z]+$/;
+    // [lowerCaseOnly.test(null), lowerCaseOnly.test()]
+
+    /*
+    [true, true]
+    正则表达式的test方法会自动将参数转换为字符串，原式就变成了[lowerCaseOnly.test("null"), lowerCaseOnly.test("undefined")]，结果都是真
+    */
+
+    // [,,,].join(", ")
+    /*
+        ", , "
+        avaScript中使用字面量创建数组时，如果最末尾有一个逗号','，会背省略，所以实际上这个数组只有三个元素（都是undefined）：
+
+        console.log([,,,].length);
+        //输出结果：
+        //3
+        而三个元素，使用join方法，只需要添加两次，所以结果为", , "
+    */
+
+    // var a = { class: "Animal", name: 'Fido' };
+    // a.class
+
+    /*
+        经典坑中的一个，class是关键字。根据浏览器的不同，结果不同：
+
+        chrome的结果： "Animal"
+
+        Firefox的结果："Animal"
+
+        Opera的结果："Animal"
+
+        IE 8以上也是： "Animal"
+
+        IE 8 及以下： 报错
+    */
+
+    // var a = new Date("epoch")
+    /*
+        Invalid Date
+    */
+
+    // var a = Function.length,
+    //     b = new Function().length
+    // a === b
+    /*
+    false
+    这是错误的。函数。长度被定义为1。另一方面，函数原型对象的长度属性被定义为0。
+    */
+
+    // var a = Date(0);
+    // var b = new Date(0);
+    // var c = new Date();
+    // [a === b, b === c, a === c]
+
+    /*
+    当日期被作为构造函数调用时，它返回一个相对于纪元的对象（1970年1月1日）。当参数丢失时，它会返回当前日期。当它作为一个函数被调用时，它会返回当前时间的字符串表示法。
+    "Sun Jun 10 2018 17:51:31 GMT+0800 (中国标准时间)"
+    Thu Jan 01 1970 08:00:00 GMT+0800 (中国标准时间)
+    Sun Jun 10 2018 17:51:31 GMT+0800 (中国标准时间)
+    */
+
+    // var min = Math.min(), max = Math.max()
+    // min < max
+    /*
+        min Infinity
+        max -Infinity
+        min>max   true
+    */
+
+    // function captureOne(re, str) {
+    //     var match = re.exec(str);
+    //     return match && match[1];
+    // }
+    // var numRe = /num=(\d+)/ig,
+    //     wordRe = /word=(\w+)/i,
+    //     a1 = captureOne(numRe, "num=1"),
+    //     a2 = captureOne(wordRe, "word=1"),
+    //     a3 = captureOne(numRe, "NUM=2"),
+    //     a4 = captureOne(wordRe, "WORD=2");
+    // [a1 === a2, a3 === a4]
+    /*
+        [true,false]
+        这个题考的是/g,
+        在创建正则表达式对象时如果使用了“g”标识符或者设置它了的﻿global属性值为ture时，那么新创建的正则表达式对象将使用模式对要将要匹配的字符串进行全局匹配。在全局匹配模式下可以对指定要查找的字符串执行多次匹配。每次匹配使用当前正则对象的lastIndex属性的值作为在目标字符串中开始查找的起始位置。lastIndex属性的初始值为0，找到匹配的项后lastIndex的值被重置为匹配内容的下一个字符在字符串中的位置索引，用来标识下次执行匹配时开始查找的位置,如果找不到匹配的项lastIndex的值会被设置为0。当没有设置正则对象的全局匹配标志时lastIndex属性的值始终为0，每次执行匹配仅查找字符串中第一个匹配的项。可以通下面的代码来查看在执行匹配相应的lastIndex 属性的值,代码如下:
+        var str = "123#abc"; 
+        var re = /abc/ig; 
+        console.log(re.test(str)); //输出ture 
+        console.log(re.lastIndex); //输出7 
+        console.log(re.test(str)); //输出false 
+        console.log(re.lastIndex); //输出0 
+        console.log(re.test(str)); //输出ture 
+        console.log(re.lastIndex); //输出7 
+        console.log(re.test(str)); //输出false 
+        console.log(re.lastIndex); //输出0
+    */
+
+    // var a = new Date("2014-03-19"),
+    //     b = new Date(2014, 03, 19);
+    // [a.getDay() === b.getDay(), a.getMonth() === b.getMonth()]
+    /*
+        [false,false]
+        a.getDay()返回的是星期三        a.getMonth()返回的是2   
+        b.getDay()返回的是星期六        b.getMonth()返回的是3
+        因为a的月份的索引是从0 开始的
+    */
+
+    // if ('http://giftwrapped.com/picture.jpg'.match('.gif')) {
+    //     'a gif file'
+    // } else {
+    //     'not a gif file'
+    // }
+    /*
+        a gif file
+        .被转成正则表达式
+    */
+
+    function foo(a) {
+        var a;
+        return a;
+    }
+    function bar(a) {
+        var a = 'bye';
+        return a;
+    }
+    [foo('hello'), bar('hello')]
+    /*
+        ["hello","bar"]
+    */
+</script>
